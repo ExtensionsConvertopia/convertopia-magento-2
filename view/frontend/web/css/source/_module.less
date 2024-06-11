@@ -1,0 +1,39 @@
+.recommend-lists {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
+    width: 100%;
+    box-sizing: border-box;
+
+    .recommend-list {
+        flex: 1 1 16.6666666667%;
+        // max-width: 16.6666666667%;
+        box-sizing: border-box;
+        padding: 15px 15px;
+
+        .recommend-inner {
+            border: 1px solid #ccc;
+            padding: 10px 10px;
+            border-radius: 5px;
+
+            >a {
+                text-align: center;
+                display: block;
+            }
+
+            h2 {
+                line-height: .8;
+                min-height: 41px;
+
+                a {
+                    font-size: 14px;
+                    color: #000;
+
+                    line-height: inherit;
+
+                }
+            }
+        }
+
+    }
+}

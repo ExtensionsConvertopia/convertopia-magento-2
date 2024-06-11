@@ -1,0 +1,6 @@
+<?php
+
+if ($block->canShowListing() == 1 && $block->canShow() ) {
+    $productTileHtml = $this->getLayout()->createBlock("Innovadeltech\Convertopia\Block\Product\ProductsListExtended")->setTemplate("Magento_CatalogWidget::product/widget/content/grid.phtml")->setTitle($block->getTitle())->toHtml();
+    echo $productTileHtml;
+}

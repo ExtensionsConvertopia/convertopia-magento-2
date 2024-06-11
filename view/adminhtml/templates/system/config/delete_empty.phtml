@@ -1,0 +1,128 @@
+<?php
+$feedUrls = $block->getProductFeedUrl();
+?>
+
+
+
+<div class="loading-mask" data-role="loader" style="display: none;">
+    <div class="loader"> &nbsp;
+    </div>
+</div>
+
+
+<div class="convertopia-products-ajax">
+    <?php echo $block->getProductFeedButton() ?>
+</div>
+</br>
+
+<div class="convertopia-products-delta">
+    <?php echo $block->getProductDeltaFeedButton() ?>
+</div>
+</br>
+
+<div class="convertopia-customers-ajax">
+    <?php echo $block->getCustomerFeedButton() ?>
+</div>
+</br>
+
+<div class="convertopia-customers-delta">
+    <?php echo $block->getCustomerDeltaFeedButton() ?>
+</div>
+</br>
+
+<div class="convertopia-orders-ajax">
+    <?php echo $block->getOrderFeedButton() ?>
+</div>
+
+</br>
+
+<div class="convertopia-orders-delta">
+    <?php echo $block->getOrderDeltaFeedButton() ?>
+</div>
+</br>
+
+<div>
+    <div id="customers_search_results"></div>
+</div>
+
+<script>
+    require([
+        'jquery',
+        'prototype',
+    ], function($) {
+        $(document).ready(function() {
+            $('.convertopia-feed').on('click', function() {
+
+
+                var parentClass = $(this).parent().attr('class');
+                var dataLayerObject = "";
+                if (parentClass == 'convertopia-products-ajax') {
+                    dataLayerObject = '<?=  /* @noEscape */ $feedUrls['convertopia-products-ajax'] ?>';
+                } else if (parentClass == 'convertopia-products-delta') {
+                    dataLayerObject = '<?=  /* @noEscape */ $feedUrls['convertopia-products-delta'] ?>';
+                } else if (parentClass == 'convertopia-customers-ajax') {
+                    dataLayerObject = '<?=  /* @noEscape */ $feedUrls['convertopia-customers-ajax'] ?>';
+                } else if (parentClass == 'convertopia-customers-delta') {
+                    dataLayerObject = '<?=  /* @noEscape */ $feedUrls['convertopia-customers-delta'] ?>';
+                } else if (parentClass == 'convertopia-orders-ajax') {
+                    dataLayerObject = '<?=  /* @noEscape */ $feedUrls['convertopia-orders-ajax'] ?>';
+                } else if (parentClass == 'convertopia-orders-delta') {
+                    dataLayerObject = '<?=  /* @noEscape */ $feedUrls['convertopia-orders-delta'] ?>';
+                }
+
+                params = {
+                    form_key: '<?php echo $block->getFormKey() ?>'
+                };
+                $.ajax({
+                    url: dataLayerObject,
+                    data: params,
+                    type: "POST",
+                    beforeSend: function() {
+                        $(".loading-mask").show();
+                    }
+                }).done(function(data) {
+                    $(".loading-mask").hide();
+                    document.getElementById('customers_search_results').innerHTML = data.result;
+
+                });
+                // $(".loading-mask").hide();
+            });
+        });
+    });
+</script>
+
+
+<style type="text/css">
+    a#convertopia_delta_export_products-head {
+        display: none;
+    }
+
+    span#convertopia_delta_export_products-link {
+        display: none;
+    }
+    a#convertopia_delta_export_customer-head {
+        display: none;
+    }
+
+    span#convertopia_delta_export_customer-link {
+        display: none;
+    }
+    a#convertopia_delta_export_orders-head {
+        display: none;
+    }
+
+    span#convertopia_delta_export_orders-link {
+        display: none;
+    }
+
+    #convertopia_delta_export_customer{
+        display: none;
+    }
+    #convertopia_delta_export_orders{
+        display: none;
+    }
+
+    #convertopia_delta_export_products{
+        display:none
+    }
+</style>

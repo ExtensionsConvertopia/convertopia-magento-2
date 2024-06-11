@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<!--/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+* @category   Innovadel Technologies Ltd.
+* @package    Innovadeltech_Convertopia
+* @subpackage etc
+* @author     Innovadel Technologies <support@innovadeltech.com>
+* @copyright  Copyright (c) 2019 Innovadel Technologies (http://www.innovadeltech.com)
+* @version    ${release.version}
+* @link       http://www.innovadeltech.com/
+*/-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <!-- <menu>
+    <add id="Innovadeltech_Convertopia::a_menu_item" resource="Innovadeltech_Convertopia::menu_1" 
+         title="Convertopia Feed" action="convertopia/index/index" 
+         module="Innovadeltech_Convertopia" sortOrder="1" 
+         parent="Magento_Backend::system_other_settings" 
+         dependsOnModule="Magento_Backend"/>
+    </menu> -->
+</config>

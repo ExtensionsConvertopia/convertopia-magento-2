@@ -1,0 +1,102 @@
+
+<?php
+
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Framework\App\Action\Action;
+
+// @codingStandardsIgnoreFile
+echo $block->ProductWidgetTilesHtml();
+
+?>
+
+<?php
+/**
+ * Product list template
+ *
+ * @var $block \Lights\PackageDeals\Block\PackageDeals
+ */
+
+?>
+
+<div id="product_list">
+     <!-- Product listing will be updated here -->
+
+<?php if ($block->canShow()) : ?>
+    <?php
+
+    // $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    // $ProductTilesShowModel = $objectManager->get('\Innovadeltech\Convertopia\Model\Products\ProductTilesShowModel');
+    // $ProductTilesShowHtml = $ProductTilesShowModel->getProductTilesHTML( $block->getBlockHtml('formkey'));
+    $ProductTilesShowHtml = $block->ProductTilesHtml($block->getBlockHtml('formkey'));
+    echo $ProductTilesShowHtml;
+
+
+
+
+
+
+
+
+
+
+
+
+    ?>
+<?php endif; ?>
+
+
+ </div>
+
+<script>
+ 
+
+
+
+
+require(['jquery', 'jquery/ui', 'slick'], function($) {
+        $(document).ready(function() {
+
+            require(['jquery', 'Innovadeltech_Convertopia/js/products']);
+
+            $('.recommend-lists').slick({
+                dots: true,
+                infinite: false,
+                speed: 300,
+                slidesToShow: 5,
+                slidesToScroll: 1,
+                responsive: [{
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 1,
+                            infinite: true,
+                            dots: true
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+                ]
+            });
+        });
+    });
+</script>

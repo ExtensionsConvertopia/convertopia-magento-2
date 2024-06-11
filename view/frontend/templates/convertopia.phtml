@@ -1,0 +1,31 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$convertopiaJS =  $objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface')->getValue('convertopia_general/general/cdn_url');
+$convertopiaEnabled =  $objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface')->getValue('convertopia_general/general/enabled');
+?>
+<?php if($convertopiaEnabled): ?>
+<script type="text/javascript">
+    (function e() {
+        var e = document.createElement("script");
+        e.type = "text/javascript",
+            e.async = true,
+            e.src = '<?php echo $convertopiaJS; ?>';
+        var t = document.getElementsByTagName("script")[0];
+        t.parentNode.insertBefore(e, t)
+    })();
+    function getParameterByName( name ) {  
+        var regexS = "[\\?&]"+name+"=([^&#]*)", 
+        regex = new RegExp( regexS ),
+        results = regex.exec( window.location.search );
+        if ( results == null ) {
+            return "";
+        } else {
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        var searchBox = document.getElementById("search")
+        searchBox.value = getParameterByName("searchTerm").slice(0, -1);
+    });
+</script>
+<?php endif ?>

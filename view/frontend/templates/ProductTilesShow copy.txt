@@ -1,0 +1,135 @@
+<?php
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Framework\App\Action\Action;
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php
+/**
+ * Product list template
+ *
+ * @var $block \Lights\PackageDeals\Block\PackageDeals
+ */
+
+?>
+
+
+<?php if ($block->canShow()) : ?>
+
+
+
+
+
+    <h1>Ali</h1>
+
+
+    <?php
+
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+    // $productIdsArray = explode(',', $productIds);
+    $productIdsArray = [95, 96, 97, 159, 160, 161, 111, 112, 113, 14, 20, 19];
+
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $ProductTilesShowModel = $objectManager->get('\Innovadeltech\Convertopia\Model\Products\ProductTilesShowModel');
+    $ProductTilesShowHtml = $ProductTilesShowModel->getProductTilesHTML( $block->getBlockHtml('formkey'));
+
+
+    
+    // // Load the product collection based on the provided product IDs.
+    // // Load the product collection based on the provided product IDs.
+    // $productCollection =  $objectManager->create(\Magento\Catalog\Model\ResourceModel\Product\Collection::class);
+    // $productCollection->addAttributeToSelect('*');
+    // $productCollection->addIdFilter($productIdsArray);
+    // $ScopeConfig = $objectManager->get('\Magento\Framework\App\Config\ScopeConfigInterface');
+    // $product_list_heading = $ScopeConfig->getValue('convertopia/product_list/product_list_heading');
+    // $product_tiles = $ScopeConfig->getValue('convertopia/product_list/product_tiles');
+
+    // $html = '<h1>' . $product_list_heading . '</h1>';
+    // $html .= '<div class="recommend-lists">';
+
+    // $count = 0;
+    // foreach ($productCollection as $product) {
+    //     $productParentId = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+    //     if (!empty($productParentId)) {
+    //         $productParent = $objectManager->create('Magento\Catalog\Model\Product')->load($productParentId[0]);
+
+    //         $productUrl =  $objectManager->get('Magento\Catalog\Model\Product\Url')->getUrl($productParent);
+    //         $productName = $productParent->getName();
+    //         $productImage =  $objectManager->get('Magento\Catalog\Helper\Image')->init($productParent, 'product_thumbnail_image')->resize(100, 100)->getUrl();
+    //     } else {
+    //         $productUrl =  $objectManager->get('Magento\Catalog\Model\Product\Url')->getUrl($product);
+    //         $productName = $product->getName();
+    //         $productImage =  $objectManager->get('Magento\Catalog\Helper\Image')->init($product, 'product_thumbnail_image')->resize(100, 100)->getUrl();
+    //     }
+    //     $count++;
+
+    //     // Generate HTML for each product.
+    //     $html .= '<div class="recommend-list">';
+    //     $html .= '<div class="recommend-inner">';
+    //     $html .= '<a href="' . $productUrl . '"><img src="' . $productImage . '" alt="' . $productName . '" /></a>';
+    //     $html .= '<h2><a href="' . $productUrl . '">' . $productName . '</a></h2>';
+    //     $html .= '</div>';
+    //     $html .= '</div>';
+
+    //     if ($count == $product_tiles) {
+    //         break;
+    //     }
+    // }
+
+    // $html .= '</div>';
+    // echo $html;
+    echo $ProductTilesShowHtml;
+    ?>
+
+
+<script>
+    require(['jquery', 'jquery/ui', 'slick'], function($) {
+    $(document).ready(function() {
+        $('.recommend-lists').slick({
+            dots: true,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 5,    
+            slidesToScroll: 1,
+            responsive: [
+                {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    dots: true
+                }
+                },
+                {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+                }
+                // You can unslick at a given breakpoint now by adding:
+                // settings: "unslick"
+                // instead of a settings object
+            ]
+            });
+    });
+});
+</script>
+
+<?php endif; ?>

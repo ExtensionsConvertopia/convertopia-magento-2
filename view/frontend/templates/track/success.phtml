@@ -1,0 +1,19 @@
+ <script>
+    require(['jquery'], function($) {
+        $(document).ready(function() {
+
+            // debugger
+            window.convertopia = window.convertopia || [];
+            
+            var shipping_details =  <?= /* @noEscape */ $block->getDummy1(); ?> ;
+            var success_details = <?= /* @noEscape */ $block->getDummy(); ?> ;
+            // console.log(shipping_details);
+            convertopia.push(shipping_details);
+            convertopia.push(success_details);
+         
+        
+
+        });
+
+    });
+</script>

@@ -1,0 +1,115 @@
+<?php
+
+
+namespace Innovadeltech\Convertopia\Model\Products;
+
+
+
+class ProductTilesShowModel
+{
+    protected $Session;
+    protected $UrlInterface;
+    public function __construct(
+        \Magento\Customer\Model\Session $Session,
+        \Magento\Framework\UrlInterface $UrlInterface,
+
+
+    ) {
+        $this->Session = $Session;
+        $this->UrlInterface=$UrlInterface;
+    }
+
+    public function getProductTilesHTML($formKeyString)
+    {
+        // $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        // $customerSession = $objectManager->get('\Magento\Customer\Model\Session');
+        $UrlInterface = $objectManager->get('Magento\Framework\UrlInterface');
+        $customerId = $this->Session->getCustomer()->getId();
+        if ($customerId == null) {
+            $url = "http://52.51.49.68/?user_id=1";
+        } else {
+            $url = "http://52.51.49.68/?user_id=$customerId"; // Replace with your URL
+        }
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        if ($response === false) {
+            echo 'Error: ' . curl_error($ch);
+            // Handle the error
+        } else {
+            $data = json_decode($response, true);
+
+            // if ($data === null) {
+            //     echo 'Error decoding JSON: ' . json_last_error_msg();
+            //     // Handle JSON decoding error
+            // } 
+            // else {
+            //     // Now $data contains the JSON array
+            //     print_r($data);
+            // }
+        }
+
+        curl_close($ch);
+
+        // Load the product collection based on the provided product IDs.
+        $productCollection =  $objectManager->create(\Magento\Catalog\Model\ResourceModel\Product\Collection::class);
+        $productCollection->addAttributeToSelect('*');
+        $productCollection->addIdFilter($data["recommended"]);
+        // $productCollection->addIdFilter($productIdsArray);
+        $ScopeConfig = $objectManager->get('\Magento\Framework\App\Config\ScopeConfigInterface');
+        $product_list_heading = $ScopeConfig->getValue('convertopia/product_list/product_list_heading');
+        $product_tiles = $ScopeConfig->getValue('convertopia/product_list/product_tiles');
+
+        $html = '<h1>' . $product_list_heading . '</h1>';
+        $html .= '<div class="recommend-lists">';
+
+        $count = 0;
+        foreach ($productCollection as $product) {
+            $productParentId = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+            if (!empty($productParentId)) {
+                $productParent = $objectManager->create('Magento\Catalog\Model\Product')->load($productParentId[0]);
+
+                $productUrl =  $objectManager->get('Magento\Catalog\Model\Product\Url')->getUrl($productParent);
+                $productName = $productParent->getName();
+                $productImage =  $objectManager->get('Magento\Catalog\Helper\Image')->init($productParent, 'product_thumbnail_image')->resize(100, 100)->getUrl();
+            } else {
+                $productUrl =  $objectManager->get('Magento\Catalog\Model\Product\Url')->getUrl($product);
+                $productName = $product->getName();
+                $productImage =  $objectManager->get('Magento\Catalog\Helper\Image')->init($product, 'product_thumbnail_image')->resize(100, 100)->getUrl();
+            }
+            $count++;
+
+            // Generate HTML for each product.
+            $html .= '<div class="recommend-list">';
+            $html .= '<div class="recommend-inner">';
+            $html .= '<a href="' . $productUrl . '"><img src="' . $productImage . '" alt="' . $productName . '" /></a>';
+            $html .= '<h2><a href="' . $productUrl . '">' . $productName . '</a></h2>';
+
+            $html .= '<form id="product_addtocart_form" data-mage-init=\'{"catalogAddToCart":{}}\' action="' . $this->UrlInterface->getUrl('checkout/cart/add', ['product' => $product->getId()]) . '" method="post">';
+            // $html .= $block->getBlockHtml('formkey');
+            $html .= $formKeyString;
+            $html .= '<input type="hidden" name="productid" id="productid" value="' . $product->getId() . '" />';
+            $html .= '<input type="number" name="qty" id="qty" value="1" />'; // Input field for quantity
+            $html .= '<button type="submit" title="Add to Cart" class="action tocart primary">';
+            $html .= '<span>Add to Cart</span>';
+            $html .= '</button>';
+            $html .= '</form>';
+
+
+
+
+            $html .= '</div>';
+            $html .= '</div>';
+
+            if ($count == $product_tiles) {
+                break;
+            }
+        }
+
+        $html .= '</div>';
+        return $html;
+    }
+}

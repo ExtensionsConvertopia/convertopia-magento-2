@@ -1,0 +1,202 @@
+<!--/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+* @category   Innovadel Technologies Ltd.
+* @package    Innovadeltech_Convertopia
+* @subpackage etc
+* @author     Innovadel Technologies <support@innovadeltech.com>
+* @copyright  Copyright (c) 2019 Innovadel Technologies (http://www.innovadeltech.com)
+* @version    ${release.version}
+* @link       http://www.innovadeltech.com/
+*/-->
+
+<?php /* @escapeNotVerified */ $block->getFormKey(); ?>
+<?php /** @var $block Innovadeltech\Convertopia\Block\Adminhtml\Main */
+?>
+
+
+<div>
+    <h1>Export Convertopia Feed:</h1>
+
+    <div class="search-container" style="width: 247px;">
+        <form action="Ajax.php" id="donation-request-form" method="post">
+            <input type="button" value="Generate Products Feed" onclick="click_chart()" id="btn">
+        </form>
+    </div>
+
+    <div class="search-container" style="width: 247px;">
+        <form action="Ajax.php" id="donation-request-form" method="post">
+            <input type="button" value="Generate Customer Feed " onclick="click_customers()" id="btn">
+        </form>
+    </div>
+
+    <div class="search-container" style="width: 247px;">
+        <form action="Ajax.php" id="donation-request-form" method="post">
+            <input type="button" value="Generate Order Feed " onclick="click_orders()" id="btn">
+        </form>
+    </div>
+
+</div>
+
+
+<div>
+    <h1>Delta Export Convertopia Feed:</h1>
+
+
+
+    <div class="search-container" style="width: 247px;">
+        <form action="Ajax.php" id="donation-request-form" method="post">
+            <input type="button" value="Generate Delta Customer Feed " onclick="click_delta_customers()" id="btn">
+        </form>
+    </div>
+
+    <div class="search-container" style="width: 247px;">
+        <form action="Ajax.php" id="donation-request-form" method="post">
+            <input type="button" value="Generate Delta Order Feed " onclick="click_delta_orders()" id="btn">
+        </form>
+    </div>
+
+    <div class="search-container" style="width: 247px;">
+        <form action="Ajax.php" id="donation-request-form" method="post">
+            <input type="button" value="Generate Delta Products Feed " onclick="click_delta_products()" id="btn">
+        </form>
+    </div>    
+
+</div>
+
+<div>
+
+
+</div>
+<div>
+    <h1>Output Of Feed:</h1>
+
+
+    <div id="customers_search_results"></div>
+
+</div>
+
+
+<?php
+$adminUri = $block->getAdminUri(); // admin_7asd32
+?>
+<style>
+    .convertopia-loader {
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        width: 60px;
+        height: 60px;
+        -webkit-animation: spin 2s linear infinite;
+        /* Safari */
+        animation: spin 2s linear infinite;
+        margin-top: 20px;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<script>
+    function click_chart() {
+        document.getElementById('customers_search_results').innerHTML = '<div class="convertopia-loader"></div>';
+        var postUrl = "<?= /* @noEscape */ $block->getBaseUrl() . $adminUri . '/convertopia/products/ajax'; ?>";
+        jQuery.ajax({
+            type: "GET",
+            url: postUrl,
+            success: function(data) {
+                document.getElementById('customers_search_results').innerHTML = data;
+
+            }
+        });
+    }
+
+    function click_customers() {
+        document.getElementById('customers_search_results').innerHTML = '<div class="convertopia-loader"></div>';
+        var postUrl = "<?= /* @noEscape */ $block->getBaseUrl() . $adminUri . '/convertopia/customers/ajax'; ?>";
+        jQuery.ajax({
+            type: "GET",
+            url: postUrl,
+            success: function(data) {
+                document.getElementById('customers_search_results').innerHTML = data;
+
+            }
+        });
+    }
+
+    function click_orders() {
+        document.getElementById('customers_search_results').innerHTML = '<div class="convertopia-loader"></div>';
+        var postUrl = "<?= /* @noEscape */ $block->getBaseUrl() . $adminUri . '/convertopia/orders/ajax'; ?>";
+        jQuery.ajax({
+            type: "GET",
+            url: postUrl,
+            success: function(data) {
+                document.getElementById('customers_search_results').innerHTML = data;
+
+            }
+        });
+    }
+
+
+    function click_delta_customers() {
+        document.getElementById('customers_search_results').innerHTML = '<div class="convertopia-loader"></div>';
+        var postUrl = "<?= /* @noEscape */ $block->getBaseUrl() . $adminUri . '/convertopia/customers/delta'; ?>";
+        jQuery.ajax({
+            type: "GET",
+            url: postUrl,
+            success: function(data) {
+                document.getElementById('customers_search_results').innerHTML = data;
+
+            }
+        });
+    }
+
+    function click_delta_orders() {
+        document.getElementById('customers_search_results').innerHTML = '<div class="convertopia-loader"></div>';
+        var postUrl = "<?= /* @noEscape */ $block->getBaseUrl() . $adminUri . '/convertopia/orders/delta'; ?>";
+        jQuery.ajax({
+            type: "GET",
+            url: postUrl,
+            success: function(data) {
+                document.getElementById('customers_search_results').innerHTML = data;
+
+            }
+        });
+    }
+
+    function click_delta_products() {
+        document.getElementById('customers_search_results').innerHTML = '<div class="convertopia-loader"></div>';
+        var postUrl = "<?= /* @noEscape */ $block->getBaseUrl() . $adminUri . '/convertopia/products/delta'; ?>";
+        jQuery.ajax({
+            type: "GET",
+            url: postUrl,
+            success: function(data) {
+                document.getElementById('customers_search_results').innerHTML = data;
+
+            }
+        });
+    }
+</script>
