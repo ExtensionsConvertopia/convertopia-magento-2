@@ -1,0 +1,165 @@
+ <?php
+    /**
+     * $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+     * $webStoreId = $objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface')->getValue('convertopia/convertopia_store_settings/store_id');
+     */
+    
+    $webStoreId = $block->getWebStoreId();
+
+    /**
+     * @var $block \AsquareTec\GetPackageDealsSection\Block\PackageDelay
+     */
+    ?>
+ <div>
+
+ </div>
+
+ <?php $dataLayerObject =  $block->getRequestShow(); ?>
+ <?php $login =  $block->getLoggedinCustomerName(); ?>
+ <?php $cart_view =  $block->cartView(); ?>
+ <?php $shipping_details =  $block->getShippingDetails(); ?>
+ <?php $order_total =  $block->getOrderTotal(); ?>
+ <?php $currency_code =  $block->getCurrentCurrencyCode(); ?>
+ <?php $sessionId =  $block->getSessionId(); ?>
+
+ <script>
+     require(['jquery'], function($) {
+         $(document).ready(function() {
+             var dataLayerObject = '<?=  /* @noEscape */ $block->getRequestShow(); ?>';
+             var sessionId = '<?= /* @noEscape */ $block->GetSessionId(); ?>';
+             var store_id = '<?= /* @noEscape */ $webStoreId; ?>';
+             var page_view = '<?= /* @noEscape */ $block->getPageView(); ?>';
+             var login = '<?= /* @noEscape */ $block->getLoggedinCustomerName(); ?>';
+             var store_id = '<?= /* @noEscape */ $webStoreId; ?>';
+             //console.log(dataLayerObject);
+             //console.log('Global');
+             //debugger
+             window.convertopia = window.convertopia || [];
+             var global_data = {
+                 'event': 'merchant_identify',
+                 'public_site_id': store_id,
+                 'session_id': sessionId
+             };
+             convertopia.push(global_data);
+             var pageview_data = {
+                 'event': 'page_view',
+                 'page_type': page_view,
+                 'user_id': login
+             };
+             //console.log(pageview_data);
+             convertopia.push(pageview_data);
+
+             if (dataLayerObject == 'checkout_cart_index') {
+
+                 var cart_view = JSON.parse('<?= /* @noEscape */ $block->cartView(); ?>');
+
+                 var cart_view_data = {
+                     'event': 'view_cart',
+                     'line_items': cart_view,
+                     'user_id': login
+                 };
+
+                 //console.log(cart_view_data);
+                 convertopia.push(cart_view_data);
+
+             }
+             if (dataLayerObject == 'checkout_index_index') {
+
+                 var cart_view = JSON.parse('<?= /* @noEscape */  $block->cartView(); ?>');
+
+                 var cart_view_data = {
+                     'event': 'checkout_start',
+                     'line_items': cart_view,
+                     'user_id': login
+                 };
+
+                 //console.log(cart_view_data);
+                 convertopia.push(cart_view_data);
+             }
+         });
+     });
+ </script>
+
+ <script>
+     require([
+         'jquery'
+     ], function($) {
+
+         $(document).ajaxComplete(function(event, xhr, settings) {
+             //debugger
+             var dataLayerObject = '<?= /* @noEscape */ $block->getRequestShow(); ?>';
+             //console.log(dataLayerObject);
+             convertopia = window.convertopia || [];
+             var currenct_request = settings.url;
+             //  if (settings.url.search('/default\/V1\/guest-carts/') > 0) {
+             //      //console.log("Guest payment Steps");
+             //      var response = xhr.responseJSON;
+             //      //console.log(response);
+             //  }
+             //    //debugger;
+             var response = xhr.responseJSON;
+             if (response.custom_section && (dataLayerObject == 'checkout_index_index')) {
+                 //console.log("Login  payment Steps");
+                 var response = xhr.responseJSON;
+
+                 cartObj = xhr.responseJSON;
+                 //  //debugger;
+
+                 var dataLayerData = jQuery.parseJSON((response.custom_section.customdata));
+                 //console.log(dataLayerData['checkout_shipping']);
+                 //console.log((dataLayerData['checkout_shipping']));
+
+                 var login = '<?= /* @noEscape */ $block->getLoggedinCustomerName(); ?>';
+                 var store_id = '<?= /* @noEscape */ $webStoreId; ?>';
+                 var sessionId = '<?= /* @noEscape */ $block->GetSessionId(); ?>';
+
+
+
+                 var global_data = {
+                     'event': 'merchant_identify',
+                     'public_site_id': store_id,
+                     'session_id': sessionId
+                 };
+                 convertopia.push(global_data);
+
+                 var pageview_data = {
+                     'event': 'page_view',
+                     'page_type': 'CHECKOUT_PAYMENT',
+                     'user_id': login
+                 };
+                 convertopia.push(pageview_data);
+
+                 var global_data = {
+                     'event': 'merchant_identify',
+                     'public_site_id': store_id,
+                     'session_id': sessionId
+                 };
+                 convertopia.push(global_data);
+
+                 var pageview_data = {
+                     'event': 'page_view',
+                     'page_type': 'CHECKOUT_REVIEW',
+                     'user_id': login
+                 };
+                 convertopia.push(pageview_data);
+
+
+                 dataLayerData['checkout_shipping']['user_email_hashed'] = btoa(jQuery('#customer-email').val());
+                 convertopia.push(dataLayerData['checkout_shipping'])
+
+                 //  //console.log(response);
+             } else if ((settings.url.search('/customer\/section\/load/') > 0) && 
+             ((dataLayerObject != 'checkout_onepage_success')) && ((dataLayerObject != 'checkout_index_index'))) {
+                 //  //console.log("Add to cart");
+                 var response = xhr.responseJSON;
+                 cartObj = xhr.responseJSON;
+
+                 if (response.custom_section) {
+                     var dataLayerData = jQuery.parseJSON((response.custom_section.customdata));
+                     convertopia.push(dataLayerData['add_to_cart'])
+                 }
+             }
+         });
+
+     });
+ </script>

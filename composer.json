@@ -1,0 +1,35 @@
+{
+  "name": "innovadeltech/convertopia",
+  "description": "Convertopia Search Feed",  
+  "version": "1.0.0",
+  "require": {
+    "innovadeltech/base-module": "1.0.0",
+    "php": "^7.0.0"
+  },
+  "type": "magento2-module",  
+  "license": "GPL-3.0-or-later",  
+  "authors": [
+    {
+      "name": "Innovadel Technologies",
+      "email": "support@innovadeltech.com",
+      "homepage": "http://www.innovadeltech.com",
+      "role": "Technical Support"
+    }
+  ],
+  "keywords": [
+    "magento 2",
+    "convertopia search feed",
+    "magento 2 fast search",    
+    "innovadel technologies"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Innovadeltech\\Convertopia\\": ""
+    }
+  }
+  
+}
+

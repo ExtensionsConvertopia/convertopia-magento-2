@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<!--/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+* @category   Innovadel Technologies Ltd.
+* @package    Innovadeltech_Convertopia
+* @subpackage etc
+* @author     Innovadel Technologies <support@innovadeltech.com>
+* @copyright  Copyright (c) 2019 Innovadel Technologies (http://www.innovadeltech.com)
+* @version    ${release.version}
+* @link       http://www.innovadeltech.com/
+*/-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference 
+        for="Magento\CatalogSearch\Controller\Result\Index" 
+        type="Innovadeltech\Convertopia\Controller\Search\Result" />
+    <preference 
+        for="Magento\CatalogSearch\Block\SearchResult\ListProduct" 
+        type="Innovadeltech\Convertopia\Block\Rewrite\Catalog\ListProduct" />
+    <preference 
+        for="Magento\CatalogSearch\Block\Result"
+        type="Innovadeltech\Convertopia\Block\Rewrite\Search\Result" />
+
+<type name="Magento\Customer\CustomerData\SectionPoolInterface">
+    	<arguments>
+        	<argument name="sectionSourceMap" xsi:type="array">
+            	<item name="custom_section" xsi:type="string">Innovadeltech\Convertopia\CustomerData\CustomSection</item>
+        	</argument>
+    	</arguments>
+	</type>
+
+
+</config>
