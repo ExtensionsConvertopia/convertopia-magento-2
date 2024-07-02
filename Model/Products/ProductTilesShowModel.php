@@ -107,7 +107,7 @@ class ProductTilesShowModel
         $response = curl_exec($ch);
 
         if ($response === false) {
-            echo 'Error: ' . curl_error($ch);
+            print 'Error: ' . curl_error($ch);
             // Handle the error
         } else {
             $data = json_decode($response, true);
@@ -170,7 +170,7 @@ class ProductTilesShowModel
         $response = curl_exec($ch);
 
         if ($response === false) {
-            echo 'Error: ' . curl_error($ch);
+            print 'Error: ' . curl_error($ch);
             // Handle the error
         } else {
             $data = json_decode($response, true);
